@@ -124,8 +124,6 @@ def getPrecisionRecall(y_true, y_pred):
     precision = 0
     recall = 0
 
-    F1 = 0
-
     for true, pred in zip(y_true, y_pred):
         if true == 1 and pred == 1:
             TP += 1
@@ -146,6 +144,7 @@ def getPrecisionRecall(y_true, y_pred):
 
 def f_score(y_true, y_pred):
     precision, recall = getPrecisionRecall(y_true, y_pred)
+    F1 = 0
 
     if (precision + recall) > 0:
         F1 = (2 * precision * recall) / (precision + recall)
