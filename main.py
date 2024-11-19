@@ -1,7 +1,8 @@
 import glob
 import os
 import nltk
-import math
+import math # only using to use log operations
+import sys # only using to get the value of epsilon
 
 def load_data(directory):
     x = []
@@ -97,8 +98,8 @@ def nb_test(docs, trained_model, use_log = False, smoothing = False):
                 hamWordProb = ham_fd.get(word, 0) / totHamWords
             
             if use_log:
-                spamEmailsProb_log += math.log(spamWordProb)
-                hamEmailsProb_log += math.log(hamWordProb)
+                spamEmailsProb_log += math.log(spamWordProb + sys.float_info.epsilon)
+                hamEmailsProb_log += math.log(hamWordProb + sys.float_info.epsilon)
             else:
                 spamEmailsProb *= spamWordProb
                 hamEmailsProb *= hamWordProb
@@ -155,4 +156,9 @@ x_train, y_train = load_data("./SPAM_training_set/") # LOAD the training data se
 model = nb_train(x_train, y_train) # train the model
 x_test, y_test = load_data("./SPAM_test_set/") # LOAD the test data set
 y_pred = nb_test(x_test, model, use_log = True, smoothing = True) # get the predicted results using the trained model
+p, r = getPrecisionRecall(y_test, y_pred)
 print(f_score(y_test,y_pred))
+print("Precision")
+print(p)
+print("Recall")
+print(r)
